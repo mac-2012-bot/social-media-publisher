@@ -3,10 +3,94 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react
 import axios from 'axios';
 import './App.css';
 
+// Componente de Registo
+function RegisterPage() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (password !== confirmPassword) {
+      setError('As passwords não coincidem!');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('A password deve ter pelo menos 6 caracteres!');
+      return;
+    }
+
+    // Simular registo
+    localStorage.setItem('userName', name);
+    localStorage.setItem('userEmail', email);
+    localStorage.setItem('authToken', 'simulated-token');
+    
+    alert('Registo efetuado com sucesso! Use as credenciais para login.');
+    navigate('/login');
+  };
+
+  return (
+    <div className="login-container">
+      <h1>🔒 Criar Conta</h1>
+      {error && <div className="error-message">{error}</div>}
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Nome:</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={6}
+          />
+        </div>
+        <div className="form-group">
+          <label>Confirmar Password:</label>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            minLength={6}
+          />
+        </div>
+        <button type="submit" className="login-button">Registar</button>
+      </form>
+      <div className="login-link">
+        <p>Já tem conta? <Link to="/login">Login aqui</Link></p>
+      </div>
+    </div>
+  );
+}
+
 // Componente de Login
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -20,7 +104,7 @@ function LoginPage() {
       localStorage.setItem('userEmail', email);
       navigate('/dashboard');
     } else {
-      alert('Credenciais inválidas. Tente: admin@social.com / admin123');
+      setError('Credenciais inválidas. Tente: admin@social.com / admin123');
     }
   };
 
