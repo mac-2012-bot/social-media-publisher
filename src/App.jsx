@@ -11,10 +11,17 @@ function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Simular login
-    localStorage.setItem('authToken', 'simulated-token');
-    localStorage.setItem('userEmail', email);
-    navigate('/dashboard');
+    // Credenciais padrão para teste
+    const testEmail = 'admin@social.com';
+    const testPassword = 'admin123';
+
+    if (email === testEmail && password === testPassword) {
+      localStorage.setItem('authToken', 'simulated-token');
+      localStorage.setItem('userEmail', email);
+      navigate('/dashboard');
+    } else {
+      alert('Credenciais inválidas. Tente: admin@social.com / admin123');
+    }
   };
 
   return (
